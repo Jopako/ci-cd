@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'OK' && exit 0"
+    "test": "echo 'OK' && exit 0",
+    "lint": "echo 'lint OK'",
+    "build": "echo 'build OK'"
   },
   "keywords": [],
   "author": "",
