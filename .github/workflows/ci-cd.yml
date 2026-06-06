@@ -1,0 +1,92 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─────────────── CI ───────────────
+  ci:
+    name: Testes e Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 3. Instalar dependências
+        run: npm ci
+
+      - name: 4. Lint e testes
+        run: |
+          npm run lint
+          npm test
+
+      - name: 5. Build
+        run: npm run build
+
+      - name: Salvar artefato do build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+  # ─────────────── CD ───────────────
+  deploy-staging:
+    name: Deploy → Staging
+    needs: ci                       
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy no servidor de staging
+        run: |
+          echo "Deploying to staging..."
+          # Exemplo: rsync, SSH, AWS CLI, Vercel CLI etc.
+
+  deploy-production:
+    name: Deploy → Produção
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production       
+      url: https://meusite.com
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy em produção
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   
+        run: |
+          echo "Deploying to production..."
+
+  notify:
+    name: Notificar resultado
+    needs: [deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Slack notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: "Deploy finalizado com status: ${{ job.status }}"
