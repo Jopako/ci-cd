@@ -85,8 +85,5 @@ jobs:
     if: always()
 
     steps:
-      - name: Slack notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: "Deploy finalizado com status: ${{ job.status }}"
+      - name: Notificar
+        run: echo "Pipeline finalizado com status ${{ job.status }}"
