@@ -1,126 +1,44 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 # CI/CD Pipeline com GitHub Actions
 
-Pipeline de integração e entrega contínua configurado com GitHub Actions, disparado automaticamente a cada `push` na branch `main`.
+Este repositório demonstra um pipeline básico de CI/CD usando GitHub Actions e Node.js.
 
----
+## O que o workflow faz
 
-## O que foi feito
+O workflow definido em `.github/workflows/ci-cd.yml` executa:
 
-Este projeto configura um pipeline CI/CD do zero usando apenas GitHub Actions, sem nenhuma ferramenta externa paga. O objetivo foi aprender na prática como funciona automação de testes e deploy.
+- `npm ci`
+- `npm run lint`
+- `npm test`
+- `npm run build`
+- upload do artefato `dist/`
 
----
+### Jobs principais
 
-## O que o pipeline faz
+- `ci` — realiza checkout, instala dependências, roda lint, testes e build
+- `deploy-staging` — executa após `ci` quando o push é feito em `develop`
+- `deploy-production` — executa após `ci` quando o push é feito em `main`
+- `notify` — notifica o resultado final do pipeline
 
-A cada `push` na branch `main`, o GitHub Actions executa automaticamente os seguintes jobs em sequência:
+## O que está sendo testado
 
-```
-Push → Testes e Build → Deploy Staging → Deploy Produção → Notificação
-```
+Atualmente o projeto contém:
 
-### Jobs
+- `test.js` — teste básico em Node.js usando `assert`
+- `build.js` — script que gera o arquivo `dist/bundle.js`
 
-| Job | O que faz |
-|-----|-----------|
-| **Testes e Build** | Clona o código, instala dependências, roda lint, testes e build |
-| **Deploy → Staging** | Simula deploy em ambiente de testes (roda após CI passar) |
-| **Deploy → Produção** | Simula deploy em produção (roda após staging) |
-| **Notificar resultado** | Exibe o status final do pipeline |
+Os scripts no `package.json` são:
 
----
+- `npm test` → roda `node test.js`
+- `npm run lint` → atualmente exibe apenas `lint OK`
+- `npm run build` → roda `node build.js`
 
-## Estrutura do projeto
+## Como usar
 
-```
-ci-cd/
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml   # Definição do pipeline
-├── package.json         # Scripts: lint, test, build
-└── README.md
-```
+1. Faça um commit e um `push` para a branch `main`.
+2. Abra a aba **Actions** no GitHub para ver o workflow rodar.
+3. O job `ci` deve passar se `npm test` e `npm run build` funcionarem.
 
----
+## Observações
 
-## Tecnologias
-
-- **GitHub Actions** — plataforma de CI/CD integrada ao GitHub, gratuita para repositórios públicos
-- **Node.js / npm** — gerenciador de pacotes usado para instalar dependências e rodar scripts
-- **YAML** — linguagem usada para escrever o arquivo de workflow
-
----
-
-## Como rodar
-
-Qualquer `push` na branch `main` dispara o pipeline automaticamente.
-
-Para acompanhar a execução, acesse a aba **Actions** no repositório do GitHub.
-=======
-# ciEcd
-=======
-# CI/CD Pipeline com GitHub Actions
->>>>>>> 1a0eee2 (Atualiza README)
-
-Pipeline de integração e entrega contínua configurado com GitHub Actions, disparado automaticamente a cada `push` na branch `main`.
-
----
-
-<<<<<<< HEAD
-Observação:
-- O repositório contém também `package.json` e `package-lock.json`, indicando que é um projeto Node.js.
->>>>>>> 51a1271 (FIX: corrigindo logica de dependencias do pipe)
-=======
-## O que foi feito
-
-Este projeto configura um pipeline CI/CD do zero usando apenas GitHub Actions, sem nenhuma ferramenta externa paga. O objetivo foi aprender na prática como funciona automação de testes e deploy.
-
----
-
-## O que o pipeline faz
-
-A cada `push` na branch `main`, o GitHub Actions executa automaticamente os seguintes jobs em sequência:
-
-```
-Push → Testes e Build → Deploy Staging → Deploy Produção → Notificação
-```
-
-### Jobs
-
-| Job | O que faz |
-|-----|-----------|
-| **Testes e Build** | Clona o código, instala dependências, roda lint, testes e build |
-| **Deploy → Staging** | Simula deploy em ambiente de testes (roda após CI passar) |
-| **Deploy → Produção** | Simula deploy em produção (roda após staging) |
-| **Notificar resultado** | Exibe o status final do pipeline |
-
----
-
-## Estrutura do projeto
-
-```
-ci-cd/
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml   # Definição do pipeline
-├── package.json         # Scripts: lint, test, build
-└── README.md
-```
-
----
-
-## Tecnologias
-
-- **GitHub Actions** — plataforma de CI/CD integrada ao GitHub, gratuita para repositórios públicos
-- **Node.js / npm** — gerenciador de pacotes usado para instalar dependências e rodar scripts
-- **YAML** — linguagem usada para escrever o arquivo de workflow
-
----
-
-## Como rodar
-
-Qualquer `push` na branch `main` dispara o pipeline automaticamente.
-
-Para acompanhar a execução, acesse a aba **Actions** no repositório do GitHub.
->>>>>>> 1a0eee2 (Atualiza README)
+- Os deploys ainda são placeholders: eles não fazem deploy real.
+- O pipeline é útil para validar se a integração e os testes básicos estão funcionando.
