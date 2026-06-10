@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'OK' && exit 0",
+    "test": "node test.js",
     "lint": "echo 'lint OK'",
-    "build": "echo 'build OK'"
+    "build": "node build.js"
   },
   "keywords": [],
   "author": "",
