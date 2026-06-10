@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CI/CD Pipeline com GitHub Actions
 
 Pipeline de integração e entrega contínua configurado com GitHub Actions, disparado automaticamente a cada `push` na branch `main`.
@@ -55,3 +56,15 @@ ci-cd/
 Qualquer `push` na branch `main` dispara o pipeline automaticamente.
 
 Para acompanhar a execução, acesse a aba **Actions** no repositório do GitHub.
+=======
+# ciEcd
+
+Resumo rápido do que foi feito neste repositório:
+
+- Adicionado um pipeline de CI/CD em `.github/workflows/ci-cd.yml`.
+- O workflow foi criado para automatizar o processo de integração e entrega contínua.
+- Este README serve como documentação breve do ajuste realizado.
+
+Observação:
+- O repositório contém também `package.json` e `package-lock.json`, indicando que é um projeto Node.js.
+>>>>>>> 51a1271 (FIX: corrigindo logica de dependencias do pipe)

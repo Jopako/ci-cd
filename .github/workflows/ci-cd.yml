@@ -40,26 +40,16 @@ jobs:
           path: dist/
 
   # ─────────────── CD ───────────────
-  deploy-staging:
+deploy-staging:
     name: Deploy → Staging
-    needs: ci                       
+    needs: ci                        
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    
 
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
-      - name: Deploy no servidor de staging
-        run: |
-          echo "Deploying to staging..."
-          # Exemplo: rsync, SSH, AWS CLI, Vercel CLI etc.
-
-  deploy-production:
+deploy-production:
     name: Deploy → Produção
-    needs: deploy-staging
+    needs: ci                       
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment:
@@ -78,7 +68,7 @@ jobs:
         run: |
           echo "Deploying to production..."
 
-  notify:
+notify:
     name: Notificar resultado
     needs: [deploy-staging, deploy-production]
     runs-on: ubuntu-latest
